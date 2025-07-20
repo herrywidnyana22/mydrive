@@ -1,19 +1,19 @@
 @import 'tailwindcss';
 
 :root {
-  --color-brand: #FA7275;
-  --color-brand-100: #EA6365;
-  --color-red: #FF7474;
+  --color-brand: #fa7275;
+  --color-brand-100: #ea6365;
+  --color-red: #ff7474;
   --color-error: #b80000;
-  --color-green: #3DD9B3;
-  --color-blue: #56B8FF;
-  --color-pink: #EEA8FD;
-  --color-orange: #F9AB72;
-  --color-light-100: #333F4E;
-  --color-light-200: #A3B2C7;
-  --color-light-300: #F2F5F9;
-  --color-light-400: #F2F4F8;
-  --color-dark-100: #04050C;
+  --color-green: #3dd9b3;
+  --color-blue: #56b8ff;
+  --color-pink: #eea8fd;
+  --color-orange: #f9ab72;
+  --color-light-100: #333f4e;
+  --color-light-200: #a3b2c7;
+  --color-light-300: #f2f5f9;
+  --color-light-400: #f2f4f8;
+  --color-dark-100: #04050c;
   --color-dark-200: #131524;
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -70,19 +70,19 @@
 }
 
 @theme {
-  --color-brand: #FA7275;
-  --color-brand-100: #EA6365;
-  --color-red: #FF7474;
+  --color-brand: #fa7275;
+  --color-brand-100: #ea6365;
+  --color-red: #ff7474;
   --color-error: #b80000;
-  --color-green: #3DD9B3;
-  --color-blue: #56B8FF;
-  --color-pink: #EEA8FD;
-  --color-orange: #F9AB72;
-  --color-light-100: #333F4E;
-  --color-light-200: #A3B2C7;
-  --color-light-300: #F2F5F9;
-  --color-light-400: #F2F4F8;
-  --color-dark-100: #04050C;
+  --color-green: #3dd9b3;
+  --color-blue: #56b8ff;
+  --color-pink: #eea8fd;
+  --color-orange: #f9ab72;
+  --color-light-100: #333f4e;
+  --color-light-200: #a3b2c7;
+  --color-light-300: #f2f5f9;
+  --color-light-400: #f2f4f8;
+  --color-dark-100: #04050c;
   --color-dark-200: #131524;
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -110,7 +110,6 @@
   --chart-5: 27 87% 67%;
   --radius: 0.5rem;
 }
-
 
 /* ===== TYPOGRAPHY */
 .h1 {
@@ -231,7 +230,8 @@
   border: 1px solid var(--color-light-300);
   padding-left: 1rem;
   padding-right: 1rem;
-  box-shadow: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
+  box-shadow: 0px 10px 30px 0px
+    rgba(66, 71, 97, 0.1);
 }
 .shad-form-label {
   color: var(--color-light-100);
@@ -301,7 +301,8 @@
   font-size: 40px;
   font-weight: 500;
   border-radius: 0.75rem;
-  box-shadow: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
+  box-shadow: 0px 10px 30px 0px
+    rgba(66, 71, 97, 0.1);
   color: var(--color-brand-100);
   justify-content: center;
   display: flex;

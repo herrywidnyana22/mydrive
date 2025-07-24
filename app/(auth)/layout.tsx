@@ -36,10 +36,18 @@ const AuthLayout = ({
           />
         </div>
       </section>
-      <section className=''>
-        <div></div>
+      <section className='flex flex-1 flex-col items-center bg-white p-4 py-10 lg: justify-center lg:p-10 lg:py-0'>
+        <div className='mb-1 lg:hidden'>
+          <Image
+            src='/assets/icons/logo-full-brand.svg'
+            alt='logo'
+            height={80}
+            width={220}
+            className='h-auto w-[200px] lg:w-[250px]'
+          />
+        </div>
+        {children}
       </section>
-      {children}
     </div>
   );
 };

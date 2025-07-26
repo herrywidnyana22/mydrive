@@ -41,30 +41,50 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
     console.log(values);
   };
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-8'
-      >
-        <FormField
-          control={form.control}
-          name='fullname'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder='shadcn' {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type='submit'>Submit</Button>
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='auth-form'>
+          <FormField
+            control={form.control}
+            name='fullname'
+            render={({ field }) => (
+              <FormItem>
+                <div className='form-item'>
+                  <FormLabel className='form-label'>Fullname</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Enter your full naame'
+                      className='input'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='fullname'
+            render={({ field }) => (
+              <FormItem>
+                <div className='form-item'>
+                  <FormLabel className='form-label'>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter your email' className='input' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+          <Button type='submit' className='submit-btn'>
+            {type === 'login' ? 'Login' : 'Register'}
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 };
 

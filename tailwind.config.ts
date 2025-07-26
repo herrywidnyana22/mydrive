@@ -15,12 +15,9 @@ const config: Config = {
       },
 
       boxShadow: {
-        'shadow-1':
-          '0px 10px 30px 0px rgba(66, 71, 97, 0.1)',
-        'shadow-2':
-          '0px 8px 30px 0px rgba(65, 89, 214, 0.3)',
-        'shadow-3':
-          '0px 8px 30px 0px rgba(65, 89, 214, 0.1)',
+        'shadow-1': '0px 10px 30px 0px rgba(66, 71, 97, 0.1)',
+        'shadow-2': '0px 8px 30px 0px rgba(65, 89, 214, 0.3)',
+        'shadow-3': '0px 8px 30px 0px rgba(65, 89, 214, 0.1)',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -34,8 +31,7 @@ const config: Config = {
         },
       },
       animation: {
-        'blink-out':
-          'blink-out 1.25s ease-out infinite',
+        'blink-out': 'blink-out 1.25s ease-out infinite',
       },
     },
   },

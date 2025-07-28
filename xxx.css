@@ -1,3 +1,12 @@
+/* NEXT_PUBLIC_APPWRITE_PROJECT_ID = "6885c5950037800fdb45"
+NEXT_PUBLIC_APPWRITE_ENDPOINT = "https://syd.cloud.appwrite.io/v1"
+NEXT_PUBLIC_APPWRITE_DATABASE = "6485c5950037800fdb45"
+NEXT_PUBLIC_APPWRITE_USERS_COLLECTION = "6885d25f002fde18a712"
+NEXT_PUBLIC_APPWRITE_FILES_COLLECTION = "68864588003b65267dfb"
+NEXT_PUBLIC_APPWRITE_BUCKET = "68864955000be95b178b"
+NEXT_APPWRITE_KEY = ""
+NEXT_APPWRITE_SECRET = "standard_4d59e10e692cf8c41450fc8c04d8658e58687513b654aff9f32ece5b02eedcad03278d520963a6a0d1a97ee43b3702caca54eba2d740c9e06135997a517e670e3d0e0ce3d5408133279702af2db93ba52b422d8e460e482fa772345f0974adde390406984f41abfccbb6a52eed8dff082478c6005e068d65ce83ff4fdf26335c" */
+
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
@@ -248,8 +257,7 @@
   border: 1px solid var(--color-light-300);
   padding-left: 1rem;
   padding-right: 1rem;
-  box-shadow: 0px 10px 30px 0px
-    rgba(66, 71, 97, 0.1);
+  box-shadow: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
 }
 .shad-form-label {
   color: var(--color-light-100);
@@ -319,8 +327,7 @@
   font-size: 40px;
   font-weight: 500;
   border-radius: 0.75rem;
-  box-shadow: 0px 10px 30px 0px
-    rgba(66, 71, 97, 0.1);
+  box-shadow: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
   color: var(--color-brand-100);
   justify-content: center;
   display: flex;

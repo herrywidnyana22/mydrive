@@ -1,6 +1,6 @@
-import AuthForm from '@/components/AuthForm';
+import FormAuth from '@/components/Form-auth';
 import React from 'react';
 
-const Login = () => <AuthForm type='login' />;
+const Login = () => <FormAuth type='login' />;
 
 export default Login;

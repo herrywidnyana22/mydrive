@@ -1,11 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-const AuthLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='flex min-h-screen'>
       <section className='bg-brand p-10 hidden w-1/2 items-center justify-center lg:flex xl:w-2/5'>
@@ -18,12 +14,9 @@ const AuthLayout = ({
             className='h-auto'
           />
           <div className='space-y-5 text-white'>
-            <h1 className='h1'>
-              Manage your files
-            </h1>
+            <h1 className='h1'>Manage your files</h1>
             <p className='body-1'>
-              This is a simple and secure way to
-              store and manage your files.
+              This is a simple and secure way to store and manage your files.
             </p>
           </div>
 
@@ -36,8 +29,8 @@ const AuthLayout = ({
           />
         </div>
       </section>
-      <section className='flex flex-1 flex-col items-center bg-white p-4 py-10 lg: justify-center lg:p-10 lg:py-0'>
-        <div className='mb-1 lg:hidden'>
+      <section className='flex flex-1 flex-col items-center bg-white p-4 py-10 justify-center lg:p-10 lg:py-0'>
+        <div className='mb-20 lg:hidden'>
           <Image
             src='/assets/icons/logo-full-brand.svg'
             alt='logo'

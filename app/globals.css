@@ -313,7 +313,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: inherit;
+  color: var(--color-light-400);
 }
 .submit-btn:hover {
   background-color: var(--color-brand-100);
@@ -1150,6 +1150,7 @@
   top: -1.75rem;
   right: -0.25rem;
   cursor: pointer;
+  color: var(--color-brand);
 }
 
 @media (min-width: 640px) {

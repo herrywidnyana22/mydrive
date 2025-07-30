@@ -17,6 +17,8 @@ import {
 import { Input } from './ui/input';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { createAccount } from '@/lib/actions/user.actions';
+import ModalOtp from './Modal-otp';
 
 type AuthFormType = 'login' | 'register';
 
@@ -39,9 +41,10 @@ const authSchema = (formType: AuthFormType) => {
     }),
   });
 };
-const AuthForm = ({ type }: { type: AuthFormType }) => {
+const FormAuth = ({ type }: { type: AuthFormType }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [accoundId, setAccoundId] = useState('');
 
   const formSchema = authSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -52,9 +55,24 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+
+    try {
+      const user = await createAccount({
+        fullName: values.fullname || '',
+        email: values.email,
+      });
+
+      setAccoundId(user.accountId);
+    } catch (error) {
+      setErrorMsg('Failed to create account. Please try again.');
+      console.log({ error });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <>
       <Form {...form}>
@@ -73,7 +91,7 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
                     <FormLabel className='form-label'>Full Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Enter your full naame'
+                        placeholder='Enter your full name'
                         className='form-input'
                         {...field}
                       />
@@ -128,8 +146,10 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
           </div>
         </form>
       </Form>
+
+      {accoundId && <ModalOtp email={form.getValues('email')} accountId={accoundId} />}
     </>
   );
 };
 
-export default AuthForm;
+export default FormAuth;

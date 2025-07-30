@@ -3,10 +3,17 @@
 import { createAdminClient } from '@/lib/appwriter';
 import { appwriteConfig } from '@/lib/appwriter/config';
 import { ID, Query } from 'node-appwrite';
+import { parseStringify } from '../utils';
+import { cookies } from 'next/headers';
 
 type UsersType = {
   fullName: string;
   email: string;
+};
+
+type OTPType = {
+  accountId: string;
+  passcode: string;
 };
 
 const getUserByEmail = async (email: string) => {
@@ -21,11 +28,12 @@ const getUserByEmail = async (email: string) => {
   return result.total > 0 ? result.documents[0] : null;
 };
 
-const handleError = (error: unknown, message: string) => {
+const onError = (error: unknown, message: string) => {
+  console.log(error, message);
   throw error;
 };
 
-const sendEmailOTP = async ({ email }: UsersType) => {
+export const sendEmailOTP = async ({ email }: { email: string }) => {
   const { account } = await createAdminClient();
 
   try {
@@ -33,11 +41,11 @@ const sendEmailOTP = async ({ email }: UsersType) => {
 
     return session.userId;
   } catch (error) {
-    handleError(error, 'Failed to send email verification');
+    onError(error, 'Failed to send email verification');
   }
 };
 
-const createAccount = async ({ fullName, email }: UsersType) => {
+export const createAccount = async ({ fullName, email }: UsersType) => {
   const existUser = await getUserByEmail(email);
 
   const accountId = await sendEmailOTP({ email });
@@ -49,9 +57,35 @@ const createAccount = async ({ fullName, email }: UsersType) => {
 
     await database.createDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      appwriteConfig.usersCollectionId,
       ID.unique(),
-      {}
+      {
+        fullName,
+        email,
+        accountId,
+        // https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png
+        avatar: '@/assets/images/avatar-placeholder.png',
+      }
     );
+  }
+
+  return parseStringify({ accountId });
+};
+
+export const verifyOTP = async ({ accountId, passcode }: OTPType) => {
+  try {
+    const { account } = await createAdminClient();
+    const session = await account.createSession(accountId, passcode);
+
+    (await cookies()).set('appwrite-session', session.secret, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+    });
+
+    return parseStringify({ sessionId: session.$id });
+  } catch (error) {
+    onError(error, 'Failed to verify OTP');
   }
 };

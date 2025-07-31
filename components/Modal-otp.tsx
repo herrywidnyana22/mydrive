@@ -31,8 +31,11 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
 
   const router = useRouter();
 
-  const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const onSubmit = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault();
+
+    if (passcode.length < 6 || isLoading) return;
+
     setErrorMessage(null);
     setIsLoading(true);
     try {
@@ -62,6 +65,14 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
     }
   };
 
+  // ✅ Run when OTP input changes
+  const handleChange = (value: string) => {
+    setPassCode(value);
+    if (value.length === 6) {
+      onSubmit(); // Auto-submit when full
+    }
+  };
+
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent className='alert-dialog'>
@@ -81,7 +92,7 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
           maxLength={6}
           value={passcode}
           disabled={isLoading}
-          onChange={setPassCode}
+          onChange={handleChange}
         >
           <InputOTPGroup className='otp mt-3'>
             <InputOTPSlot index={0} className='otp-slot' />

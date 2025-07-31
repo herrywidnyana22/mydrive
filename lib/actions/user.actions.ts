@@ -1,10 +1,11 @@
 'use server';
 
-import { createAdminClient } from '@/lib/appwriter';
+import { createAdminClient, createSessionClient } from '@/lib/appwriter';
 import { appwriteConfig } from '@/lib/appwriter/config';
 import { ID, Query } from 'node-appwrite';
 import { parseStringify } from '../utils';
 import { cookies } from 'next/headers';
+import { avatarPlaceholderUrl } from '@/constants';
 
 type UsersType = {
   fullName: string;
@@ -26,6 +27,20 @@ const getUserByEmail = async (email: string) => {
   );
 
   return result.total > 0 ? result.documents[0] : null;
+};
+
+export const getCurrentUser = async () => {
+  const { account, database } = await createSessionClient();
+
+  const result = await account.get();
+
+  const user = await database.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.usersCollectionId,
+    [Query.equal('accountId', [result.$id])]
+  );
+
+  if (user.total > 0) return parseStringify(user.documents[0]);
 };
 
 const onError = (error: unknown, message: string) => {
@@ -64,7 +79,7 @@ export const createAccount = async ({ fullName, email }: UsersType) => {
         email,
         accountId,
         // https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png
-        avatar: '@/assets/images/avatar-placeholder.png',
+        avatar: avatarPlaceholderUrl,
       }
     );
   }

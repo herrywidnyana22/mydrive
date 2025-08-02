@@ -6,6 +6,7 @@ import { ID, Query } from 'node-appwrite';
 import { parseStringify } from '../utils';
 import { cookies } from 'next/headers';
 import { avatarPlaceholderUrl } from '@/constants';
+import { redirect } from 'next/navigation';
 
 type UsersType = {
   fullName: string;
@@ -78,7 +79,6 @@ export const createAccount = async ({ fullName, email }: UsersType) => {
         fullName,
         email,
         accountId,
-        // https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png
         avatar: avatarPlaceholderUrl,
       }
     );
@@ -102,5 +102,17 @@ export const verifyOTP = async ({ accountId, passcode }: OTPType) => {
     return parseStringify({ sessionId: session.$id });
   } catch (error) {
     onError(error, 'Failed to verify OTP');
+  }
+};
+
+export const logout = async () => {
+  const { account } = await createSessionClient();
+  try {
+    await account.deleteSession('current');
+    (await cookies()).delete('appwrite-session');
+  } catch (error) {
+    onError(error, 'Failed to logout');
+  } finally {
+    redirect('/login');
   }
 };

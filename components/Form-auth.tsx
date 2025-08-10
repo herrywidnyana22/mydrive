@@ -17,7 +17,7 @@ import {
 import { Input } from './ui/input';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { createAccount } from '@/lib/actions/user.actions';
+import { createAccount, login } from '@/lib/actions/user.actions';
 import ModalOtp from './Modal-otp';
 
 type AuthFormType = 'login' | 'register';
@@ -59,10 +59,13 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
     setIsLoading(true);
 
     try {
-      const user = await createAccount({
-        fullName: values.fullname || '',
-        email: values.email,
-      });
+      const user =
+        type === 'login'
+          ? await login({ email: values.email })
+          : await createAccount({
+              fullName: values.fullname || '',
+              email: values.email,
+            });
 
       setAccoundId(user.accountId);
     } catch (error) {

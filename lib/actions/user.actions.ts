@@ -7,16 +7,7 @@ import { parseStringify } from '../utils';
 import { cookies } from 'next/headers';
 import { avatarPlaceholderUrl } from '@/constants';
 import { redirect } from 'next/navigation';
-
-type UsersType = {
-  fullName: string;
-  email: string;
-};
-
-type OTPType = {
-  accountId: string;
-  passcode: string;
-};
+import { OTPType, RegisterProps } from '@/types';
 
 const getUserByEmail = async (email: string) => {
   const { database } = await createAdminClient();
@@ -61,7 +52,7 @@ export const sendEmailOTP = async ({ email }: { email: string }) => {
   }
 };
 
-export const createAccount = async ({ fullName, email }: UsersType) => {
+export const createAccount = async ({ fullName, email }: RegisterProps) => {
   const existUser = await getUserByEmail(email);
 
   const accountId = await sendEmailOTP({ email });
@@ -115,4 +106,17 @@ export const logout = async () => {
   } finally {
     redirect('/login');
   }
+};
+
+export const login = async ({ email }: { email: string }) => {
+  try {
+    const existUser = await getUserByEmail(email);
+
+    if (!existUser) {
+      return parseStringify({ accountId: null, error: 'User not found' });
+    }
+
+    await sendEmailOTP({ email });
+    return parseStringify({ accountId: existUser.accountId });
+  } catch (error) {}
 };

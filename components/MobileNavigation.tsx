@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { UserProps } from '@/types';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -16,9 +9,15 @@ import UserAvatar from './UserAvatar';
 import { Separator } from './ui/separator';
 import NavItem from './NavItem';
 import ButtonLogout from './ButtonLogout';
-import Upload from './Upload';
+import Uploader from './Uploader';
 
-const MobileNavigation = ({ ownerId, accountId, fullName, email, avatar }: UserProps) => {
+const MobileNavigation = ({
+  $id: ownerId,
+  accountId,
+  fullName,
+  email,
+  avatar,
+}: UserProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathName = usePathname();
 
@@ -50,7 +49,7 @@ const MobileNavigation = ({ ownerId, accountId, fullName, email, avatar }: UserP
             <Separator className='mb-4 bg-light-200/20' />
           </SheetTitle>
           <NavItem isMobile={true} />
-          <Upload />
+          <Uploader ownerId={ownerId} accountId={accountId} />
           <Separator className='my-4 bg-light-200/20' />
           <div className='flex flex-col justify-between gap-4 pb-4'>
             <ButtonLogout isMobile />

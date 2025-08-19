@@ -8,6 +8,7 @@ import { cookies } from 'next/headers';
 import { avatarPlaceholderUrl } from '@/constants';
 import { redirect } from 'next/navigation';
 import { OTPType, RegisterProps } from '@/types';
+import { onError } from './global.action';
 
 const getUserByEmail = async (email: string) => {
   const { database } = await createAdminClient();
@@ -33,11 +34,6 @@ export const getCurrentUser = async () => {
   );
 
   if (user.total > 0) return parseStringify(user.documents[0]);
-};
-
-const onError = (error: unknown, message: string) => {
-  console.log(error, message);
-  throw error;
 };
 
 export const sendEmailOTP = async ({ email }: { email: string }) => {
@@ -118,5 +114,7 @@ export const login = async ({ email }: { email: string }) => {
 
     await sendEmailOTP({ email });
     return parseStringify({ accountId: existUser.accountId });
-  } catch (error) {}
+  } catch (error) {
+    onError(error, 'Failed to login');
+  }
 };

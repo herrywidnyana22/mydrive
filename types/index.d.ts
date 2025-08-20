@@ -50,3 +50,9 @@ export type HeaderProps = {
   userId: string;
   accountId: string;
 };
+
+export type ParamsProps = {
+  params: {
+    type: string;
+  };
+};

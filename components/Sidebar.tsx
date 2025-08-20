@@ -37,7 +37,7 @@ const Sidebar = ({ fullName, email, avatar }: SidebarProps) => {
         alt='file image'
         width={340}
         height={340}
-        className='transition-all hover:rotate-3 hover:scale-110 mb-10'
+        className='transition-all hover:rotate-4 mb-10'
       />
 
       <div className='sidebar-user-info bg-brand/10'>

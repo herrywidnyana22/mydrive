@@ -936,7 +936,7 @@
   gap: 0.5rem;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  box-shadow: var(--shadow-1);
+  box-shadow: var(--shadow-2);
 }
 
 /* .uploader-button:hover {

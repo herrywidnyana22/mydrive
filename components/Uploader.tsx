@@ -7,7 +7,6 @@ import { UploaderProps } from '@/types';
 import { cn, convertFileToUrl, getFileType } from '@/lib/utils';
 import { UploadCloud, X } from 'lucide-react';
 import Thumbnail from './Thumbnail';
-import Hover from './Hover';
 import { Progress } from './ui/progress';
 import { MAX_FILE_SIZE } from '@/constants';
 import { toast } from 'sonner';
@@ -78,18 +77,14 @@ const Uploader = ({ ownerId, accountId, className }: UploaderProps) => {
                   <Thumbnail type={type} ext={extension} url={convertFileToUrl(file)} />
                   <div className='flex-col items-center w-full'>
                     <div className='preview-item-name'>{file.name}</div>
-                    <Hover text={`Sedang mengunggah: ${progressValue}%`} asChild>
-                      <Progress value={progressValue} />
-                    </Hover>
+                    <Progress value={progressValue} />
                   </div>
                 </div>
-                <Hover text='Cancel upload' asChild>
-                  <X
-                    size={25}
-                    onClick={e => onRemove(e, file.name)}
-                    className='p-1 hover:text-light-400 hover:rounded-full hover:bg-brand'
-                  />
-                </Hover>
+                <X
+                  size={25}
+                  onClick={e => onRemove(e, file.name)}
+                  className='p-1 hover:text-light-400 hover:rounded-full hover:bg-brand'
+                />
               </li>
             );
           })}

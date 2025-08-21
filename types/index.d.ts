@@ -1,3 +1,5 @@
+import { Models } from 'node-appwrite';
+
 export type RegisterProps = {
   fullName: string;
   email: string;
@@ -55,4 +57,13 @@ export type ParamsProps = {
   params: {
     type: string;
   };
+};
+
+export type FileProps = {
+  file: Models.DefaultDocument;
+};
+
+export type FileTimeProps = {
+  date: string;
+  className?: string;
 };

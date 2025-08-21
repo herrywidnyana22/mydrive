@@ -1,12 +1,19 @@
+import Card from '@/components/Card';
 import Sort from '@/components/Sort';
+import { getFiles } from '@/lib/actions/file.action';
 import { ParamsProps } from '@/types';
+import { Models } from 'node-appwrite';
 
 const Page = async ({ params }: ParamsProps) => {
-  const type = (await params)?.type || '';
+  const pageTitle = (await params)?.type || '';
+
+  const files = await getFiles();
+
   return (
     <div className='page-container'>
+      {/* <div>{JSON.stringify({ files })}</div> */}
       <section className='w-full'>
-        <h1 className='h1 capitalize'>{type}</h1>
+        <h1 className='h1 capitalize'>{pageTitle}</h1>
         <div className='total-size-section'>
           <p className='body-1'>
             Total: <span className='h5 text-brand'>0MB</span>
@@ -17,6 +24,16 @@ const Page = async ({ params }: ParamsProps) => {
           </div>
         </div>
       </section>
+
+      {files.total > 0 ? (
+        <section className='file-list'>
+          {files.documents.map((file: Models.DefaultDocument) => (
+            <Card key={file.$id} file={file} />
+          ))}
+        </section>
+      ) : (
+        <p className='empty-list'>Belum ada file yg diunggah</p>
+      )}
     </div>
   );
 };

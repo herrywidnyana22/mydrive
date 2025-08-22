@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,10 +14,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from './ui/input';
-import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { createAccount, login } from '@/lib/actions/user.actions';
 import ModalOtp from './Modal-otp';
+import ButtonCustom from './Button-custom';
 
 type AuthFormType = 'login' | 'register';
 
@@ -126,14 +125,13 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
               </FormItem>
             )}
           />
-          <Button
+          <ButtonCustom
             type='submit'
-            disabled={isLoading}
+            isLoading={isLoading}
             className='form-submit-button cursor-pointer'
           >
             {type === 'login' ? 'Login' : 'Register'}
-            {isLoading && <Loader2 size={24} className='animate-spin' />}
-          </Button>
+          </ButtonCustom>
           {errorMsg && <p className='error-message'>{errorMsg}</p>}
 
           <div className='body-2 flex justify-center'>

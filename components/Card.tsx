@@ -1,8 +1,10 @@
-import { FileProps } from '@/types';
 import Link from 'next/link';
 import Thumbnail from './Thumbnail';
-import { constructFileUrl, convertFileSize } from '@/lib/utils';
 import FileTime from './FileTime';
+import FileOption from './FileOption';
+
+import { FileProps } from '@/types';
+import { constructFileUrl, convertFileSize } from '@/lib/utils';
 
 const Card = async ({ file }: FileProps) => {
   const imageURL = constructFileUrl(file.bucketFileId);
@@ -16,7 +18,7 @@ const Card = async ({ file }: FileProps) => {
           className='!size-20'
         />
         <div className='flex flex-col items-end justify-between'>
-          ...
+          <FileOption file={file} />
           <p className='body-1'>{convertFileSize(file.size)}</p>
         </div>
       </div>

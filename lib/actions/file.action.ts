@@ -1,6 +1,6 @@
 'use server';
 
-import { UploadFileProps } from '@/types';
+import { RenameFileProps, UploadFileProps } from '@/types';
 import { createAdminClient } from '../appwriter';
 import { onError } from './global.action';
 import { InputFile } from 'node-appwrite/file';
@@ -74,17 +74,32 @@ export const getFiles = async () => {
 
     const queries = createQueries(currentUser);
 
-    console.log({ currentUser, queries });
-
     const files = await database.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.filesCollectionId,
       queries
     );
-    console.log({ files });
 
     return parseStringify(files);
   } catch (error) {
     onError(error, 'Gagal ketika menampilkan file');
+  }
+};
+
+export const renameFile = async ({ fileId, name, ext, path }: RenameFileProps) => {
+  const { database } = await createAdminClient();
+  try {
+    const newName = `${name}.${ext}`;
+    const updateFile = await database.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      fileId,
+      { name: newName }
+    );
+
+    revalidatePath(path);
+    return parseStringify(updateFile);
+  } catch (error) {
+    onError(error, 'Gagal mengubah nama file');
   }
 };

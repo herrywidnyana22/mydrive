@@ -1,6 +1,7 @@
 import { navItems } from '@/constants';
 import { cn } from '@/lib/utils';
 import { MobileConditionProps } from '@/types';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -18,8 +19,11 @@ const NavItem = ({ isMobile }: MobileConditionProps) => {
               )}
             >
               {item.icon && (
-                <item.icon
-                  size={28}
+                <Image
+                  src={item.icon}
+                  height={30}
+                  width={30}
+                  alt='menu-icon'
                   className={cn('nav-icon', pathname === item.url && 'nav-icon-active')}
                 />
               )}

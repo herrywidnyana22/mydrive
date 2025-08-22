@@ -240,8 +240,7 @@
 .no-focus:focus,
 .no-focus:focus-visible {
   outline: none !important;
-  ring-offset-color: transparent !important;
-  ring-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .form-input {
@@ -358,12 +357,11 @@
 .sheet button,
 .dialog button {
   outline: none;
-  ring-color: transparent;
-  ring-offset: 0;
   border: none;
+  box-shadow: none;
 }
 
-.dropdown-item,
+.option-item,
 .select-item {
   cursor: pointer;
 }
@@ -381,13 +379,14 @@
 
 /* Sidebar & MobileNavigation */
 .nav-icon {
-  width: 1.5rem; /* w-6 */
-  filter: invert(1);
+  width: 1.5rem !important; /* w-6 */
+  filter: invert(100%); /* filter invert */
+  opacity: 0.25 !important; /* opacity-25 */
 }
 
 .nav-icon-active {
-  filter: invert(0);
-  opacity: 1;
+  filter: invert(0%); /* invert-0 */
+  opacity: 1 !important; /* opacity-100 */
 }
 
 /* =====  STYLE CLASSES */
@@ -634,29 +633,17 @@
   height: 52px;
   flex: 1;
   border-radius: 9999px;
-  background-color: white;
-  color: var(--color-light-100);
-}
-
-.modal-cancel-button:hover {
-  background-color: transparent;
 }
 
 .modal-submit-button {
   height: 52px;
   width: 100%;
   flex: 1;
-  background-color: var(--color-brand);
-  color: var(--color-primary-foreground);
   border-radius: 9999px;
   transition: all 0.3s;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-}
-
-.modal-submit-button:hover {
-  background-color: var(--color-brand-100);
 }
 
 /* ===== ActionsModalContent ===== */
@@ -758,17 +745,11 @@
 
 .form-submit-button {
   height: 66px;
-  background-color: var(--color-brand);
-  color: var(--color-primary-foreground);
   border-radius: 9999px;
   transition: all 0.3s;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-}
-
-.form-submit-button:hover {
-  background-color: var(--color-primary);
 }
 
 .error-message {
@@ -938,10 +919,6 @@
   padding-right: 2.5rem;
   box-shadow: var(--shadow-2);
 }
-
-/* .uploader-button:hover {
-  background-color: var(--color-primary) / 0.85;
-} */
 
 .uploader-preview-list {
   position: fixed;
@@ -1135,10 +1112,6 @@
   transition: all 0.3s;
 }
 
-/* .mobile-sign-out-button:hover {
-  background-color: var(--color-brand) / 0.2;
-} */
-
 /* OTP Modal */
 .otp-close-button {
   position: absolute;
@@ -1203,7 +1176,6 @@
 
 /* Sidebar */
 .sidebar {
-  /* @apply remove-scrollbar; */
   display: none;
   height: 100vh;
   width: 90px;
@@ -1224,7 +1196,6 @@
   }
 }
 .sidebar-nav {
-  /* @apply h5; */
   margin-top: 2.25rem;
   flex: 1 1 0%;
   gap: 0.25rem;
@@ -1237,7 +1208,6 @@
   border-radius: 0.75rem;
   justify-content: center;
   align-items: center;
-  /* @apply h5; */
   height: 52px;
   @media (min-width: 1024px) {
     width: 100%;
@@ -1254,7 +1224,6 @@
   justify-content: center;
   gap: 0.5rem;
   border-radius: 9999px;
-  /* background-color: var(--color-brand) / 0.1; */
   padding: 0.25rem;
   color: var(--color-light-100);
   @media (min-width: 1024px) {
@@ -1287,7 +1256,6 @@
 
 /* Thumbnail */
 .thumbnail {
-  /* @apply flex-center; */
   width: 50px;
   height: 50px;
   min-width: 50px;

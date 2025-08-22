@@ -1,68 +1,124 @@
-import {
-  Clapperboard,
-  Folder,
-  Info,
-  LayoutDashboard,
-  Share2,
-  SquarePen,
-  CloudDownload,
-  Trash,
-  Images,
-  ChartPie,
-} from 'lucide-react';
+// import {
+//   Clapperboard,
+//   Folder,
+//   Info,
+//   LayoutDashboard,
+//   Share2,
+//   SquarePen,
+//   CloudDownload,
+//   Trash,
+//   Images,
+//   ChartPie,
+// } from 'lucide-react';
+
+// export const navItems = [
+//   {
+//     name: 'Dashboard',
+//     icon: LayoutDashboard,
+//     url: '/',
+//   },
+//   {
+//     name: 'Documents',
+//     icon: Folder,
+//     url: '/documents',
+//   },
+//   {
+//     name: 'Images',
+//     icon: Images,
+//     url: '/images',
+//   },
+//   {
+//     name: 'Media',
+//     icon: Clapperboard,
+//     url: '/media',
+//   },
+//   {
+//     name: 'Others',
+//     icon: ChartPie,
+//     url: '/others',
+//   },
+// ];
 
 export const navItems = [
   {
     name: 'Dashboard',
-    icon: LayoutDashboard,
+    icon: '/assets/icons/dashboard.svg',
     url: '/',
   },
   {
     name: 'Documents',
-    icon: Folder,
+    icon: '/assets/icons/documents.svg',
     url: '/documents',
   },
   {
     name: 'Images',
-    icon: Images,
+    icon: '/assets/icons/images.svg',
     url: '/images',
   },
   {
     name: 'Media',
-    icon: Clapperboard,
+    icon: '/assets/icons/video.svg',
     url: '/media',
   },
   {
     name: 'Others',
-    icon: ChartPie,
+    icon: '/assets/icons/others.svg',
     url: '/others',
   },
 ];
 
-export const actionsDropdownItems = [
+// export const fileOptionItems = [
+//   {
+//     label: 'Rename',
+//     icon: SquarePen,
+//     value: 'rename',
+//   },
+//   {
+//     label: 'Details',
+//     icon: Info,
+//     value: 'details',
+//   },
+//   {
+//     label: 'Share',
+//     icon: Share2,
+//     value: 'share',
+//   },
+//   {
+//     label: 'Download',
+//     icon: CloudDownload,
+//     value: 'download',
+//   },
+//   {
+//     label: 'Delete',
+//     icon: Trash,
+//     value: 'delete',
+//   },
+// ];
+
+export const fileOptionItems = [
   {
     label: 'Rename',
-    icon: SquarePen,
+    icon: '/assets/icons/edit.svg',
     value: 'rename',
   },
   {
     label: 'Details',
-    icon: Info,
+    icon: '/assets/icons/info.svg',
     value: 'details',
   },
   {
     label: 'Share',
-    icon: Share2,
+    icon: '/assets/icons/share.svg',
     value: 'share',
   },
   {
     label: 'Download',
-    icon: CloudDownload,
+    icon: '/assets/icons/download.svg',
     value: 'download',
   },
   {
     label: 'Delete',
-    icon: Trash,
+    icon: '/assets/icons/delete.svg',
     value: 'delete',
   },
 ];

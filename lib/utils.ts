@@ -29,6 +29,12 @@ export const calculatePercentage = (sizeInBytes: number) => {
   return Number(percentage.toFixed(2));
 };
 
+export const getFileName = (fileName: string): string => {
+  const lastDotIndex = fileName.lastIndexOf('.');
+  if (lastDotIndex === -1) return fileName; // tidak ada ekstensi
+  return fileName.substring(0, lastDotIndex);
+};
+
 export const getFileType = (fileName: string) => {
   const extension = fileName.split('.').pop()?.toLowerCase();
 

@@ -29,6 +29,11 @@ export type UploaderProps = {
   className?: string;
 };
 
+export type UploadingFile = {
+  file: File;
+  progress: number; // progress tiap file
+};
+
 export type ThumbnailProps = {
   type: string;
   ext: string;
@@ -66,4 +71,25 @@ export type FileProps = {
 export type FileTimeProps = {
   date: string;
   className?: string;
+};
+
+export type OptionActionProps = {
+  label: string;
+  icon: string;
+  value: string;
+};
+
+export type CustomButtonProps = {
+  type?: 'button' | 'submit' | 'reset';
+  isLoading: boolean;
+  className?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+};
+
+export type RenameFileProps = {
+  fileId: string;
+  name: string;
+  ext: string;
+  path: string;
 };

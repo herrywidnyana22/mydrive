@@ -14,9 +14,9 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { Loader2, X } from 'lucide-react';
 import { sendEmailOTP, verifyOTP } from '@/lib/actions/user.actions';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 type ModalOtpProps = {
   accountId: string;
@@ -79,7 +79,14 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
         <AlertDialogHeader className='relative flex justify-center'>
           <AlertDialogTitle className='h2 text-center'>
             Enter your OTP Code
-            <X size={16} className='otp-close-button' onClick={() => setIsOpen(false)} />
+            <Image
+              src={'/assets/icons/remove.svg'}
+              alt='close-icon'
+              height={20}
+              width={20}
+              className='otp-close-button'
+              onClick={() => setIsOpen(false)}
+            />
           </AlertDialogTitle>
           <AlertDialogDescription className='subtitle-2 text-center text-muted-foreground'>
             We&apos;ve sent a 6-digit OTP code to{' '}
@@ -113,7 +120,15 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
               disabled={isLoading || passcode.length < 6}
             >
               Continue
-              {isLoading && <Loader2 size={24} className='animate-spin' />}
+              {isLoading && (
+                <Image
+                  src={'assets/icons/loader.svg'}
+                  alt='loading-icon'
+                  height={20}
+                  width={20}
+                  className='animate-spin'
+                />
+              )}
             </AlertDialogAction>
 
             <div className='subtitle-2 mt-2 text-center text-error'>{errorMessage}</div>

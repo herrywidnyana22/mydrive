@@ -7,7 +7,7 @@ import Image from 'next/image';
 const Thumbnail = ({ type, ext, url, imageClassName, className }: ThumbnailProps) => {
   const isImage = type === 'image' && ext !== 'svg';
   return (
-    <figure className={cn('thumbnail', className)}>
+    <figure className={cn('thumbnail flex-center', className)}>
       <Image
         src={isImage ? url : getFileIcon(ext, type)}
         alt='File Thumbnail'

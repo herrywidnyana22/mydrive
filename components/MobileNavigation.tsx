@@ -28,7 +28,6 @@ const MobileNavigation = ({
         alt='MyDrive Logo'
         width={120}
         height={120}
-        className='h-auto'
       />
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>

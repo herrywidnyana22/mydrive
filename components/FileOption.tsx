@@ -24,8 +24,9 @@ import { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import ButtonCustom from './Button-custom';
-import { renameFile } from '@/lib/actions/file.action';
+import { renameFile, updateSharedFile } from '@/lib/actions/file.action';
 import { usePathname } from 'next/navigation';
+import { FileDetail, Share } from './FileOptionModal';
 
 const FileOption = ({ file }: FileProps) => {
   const name = getFileName(file.name);
@@ -35,6 +36,7 @@ const FileOption = ({ file }: FileProps) => {
   const [action, setAction] = useState<OptionActionProps | null>(null);
   const [fileName, setFileName] = useState(name);
   const [isLoading, setIsLoading] = useState(false);
+  const [emails, setEmails] = useState<string[]>(file.users ?? []);
 
   const pathName = usePathname();
 
@@ -50,7 +52,8 @@ const FileOption = ({ file }: FileProps) => {
     setIsLoading(true);
     let success = false;
     const executions = {
-      share: () => console.log('share'),
+      share: async () =>
+        await updateSharedFile({ fileId: file.$id, emails, path: pathName }),
       delete: () => console.log('delete'),
       rename: async () =>
         await renameFile({
@@ -75,13 +78,42 @@ const FileOption = ({ file }: FileProps) => {
     setFileName(name);
   };
 
+  const onUnshareUser = async (email: string) => {
+    setIsLoading(true);
+    const updatedEmails = emails.filter(e => e !== email);
+
+    const action = await updateSharedFile({ fileId: file.$id, emails, path: pathName });
+
+    if (action) {
+      setEmails(updatedEmails);
+    }
+    closeAll();
+  };
+
+  const onInputShareChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // cek kalau ada koma (,) atau enter-like separator
+    if (value.includes(',')) {
+      const parts = value
+        .split(',')
+        .map(v => v.trim())
+        .filter(Boolean);
+
+      setEmails(prev => [...new Set([...prev, ...parts])]);
+
+      // kosongkan input lagi
+      e.target.value = '';
+    }
+  };
+
   const onModalOpen = () => {
     if (!action) return null;
 
     const { value, label } = action;
 
     return (
-      <DialogContent className='dialog button'>
+      <DialogContent className='dialog'>
         <DialogHeader className='flex flex-col gap-3'>
           <DialogTitle className='text-center text-light-100'>{label}</DialogTitle>
           {value === 'rename' && (
@@ -89,6 +121,16 @@ const FileOption = ({ file }: FileProps) => {
               type='text'
               value={fileName}
               onChange={e => setFileName(e.target.value)}
+              className='rename-input-field'
+            />
+          )}
+          {value === 'details' && <FileDetail file={file} />}
+          {value === 'share' && (
+            <Share
+              file={file}
+              onInputChange={onInputShareChange}
+              onRemove={onUnshareUser}
+              isLoading={isLoading}
             />
           )}
         </DialogHeader>

@@ -93,3 +93,21 @@ export type RenameFileProps = {
   ext: string;
   path: string;
 };
+
+export type DetailProps = {
+  label: string;
+  value: string;
+};
+
+export type ShareProps = {
+  // onInputChange: React.Dispatch<React.SetStateAction<string[]>>;
+  onInputChange: () => void;
+  onRemove: (email: string) => void;
+  isLoading: booelan;
+} & FileProps;
+
+export type UpdateSharedFileProps = {
+  fileId: string;
+  emails: string[];
+  path: string;
+};

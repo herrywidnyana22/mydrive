@@ -9,7 +9,7 @@ import { constructFileUrl, convertFileSize } from '@/lib/utils';
 const Card = async ({ file }: FileProps) => {
   const imageURL = constructFileUrl(file.bucketFileId);
   return (
-    <Link href={file.url} target='_blank' className='file-card'>
+    <Link href={imageURL} target='_blank' className='file-card'>
       <div className='flex justify-between'>
         <Thumbnail
           type={file.type}

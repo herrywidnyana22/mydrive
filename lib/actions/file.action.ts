@@ -1,6 +1,6 @@
 'use server';
 
-import { RenameFileProps, UploadFileProps } from '@/types';
+import { RenameFileProps, UploadFileProps, UpdateSharedFileProps } from '@/types';
 import { createAdminClient } from '../appwriter';
 import { onError } from './global.action';
 import { InputFile } from 'node-appwrite/file';
@@ -101,5 +101,26 @@ export const renameFile = async ({ fileId, name, ext, path }: RenameFileProps) =
     return parseStringify(updateFile);
   } catch (error) {
     onError(error, 'Gagal mengubah nama file');
+  }
+};
+
+export const updateSharedFile = async ({
+  fileId,
+  emails,
+  path,
+}: UpdateSharedFileProps) => {
+  const { database } = await createAdminClient();
+  try {
+    const updateFile = await database.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      fileId,
+      { users: emails }
+    );
+
+    revalidatePath(path);
+    return parseStringify(updateFile);
+  } catch (error) {
+    onError(error, 'Gagal mengupdate shared file');
   }
 };

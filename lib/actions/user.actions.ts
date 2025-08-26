@@ -51,25 +51,31 @@ export const sendEmailOTP = async ({ email }: { email: string }) => {
 export const createAccount = async ({ fullName, email }: RegisterProps) => {
   const existUser = await getUserByEmail(email);
 
+  if (existUser) {
+    // already registered
+    return parseStringify({
+      accountId: null,
+      error: 'This email is already registered, please login.',
+    });
+  }
+
   const accountId = await sendEmailOTP({ email });
 
-  if (!accountId) throw new Error('Failed to send an OTP');
+  if (!accountId) onError(email, 'Failed to send an OTP');
 
-  if (!existUser) {
-    const { database } = await createAdminClient();
+  const { database } = await createAdminClient();
 
-    await database.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.usersCollectionId,
-      ID.unique(),
-      {
-        fullName,
-        email,
-        accountId,
-        avatar: avatarPlaceholderUrl,
-      }
-    );
-  }
+  await database.createDocument(
+    appwriteConfig.databaseId,
+    appwriteConfig.usersCollectionId,
+    ID.unique(),
+    {
+      fullName,
+      email,
+      accountId,
+      avatar: avatarPlaceholderUrl,
+    }
+  );
 
   return parseStringify({ accountId });
 };
@@ -109,7 +115,10 @@ export const login = async ({ email }: { email: string }) => {
     const existUser = await getUserByEmail(email);
 
     if (!existUser) {
-      return parseStringify({ accountId: null, error: 'User not found' });
+      return parseStringify({
+        accountId: null,
+        error: 'User not registered, please register first',
+      });
     }
 
     await sendEmailOTP({ email });

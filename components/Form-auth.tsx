@@ -42,8 +42,8 @@ const authSchema = (formType: AuthFormType) => {
 };
 const FormAuth = ({ type }: { type: AuthFormType }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [accoundId, setAccoundId] = useState('');
+  // const [errorMsg, setErrorMsg] = useState('');
+  const [accountId, setAccountId] = useState('');
 
   const formSchema = authSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,10 +66,24 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
               email: values.email,
             });
 
-      setAccoundId(user.accountId);
-    } catch (error) {
-      setErrorMsg('Failed to create account. Please try again.');
-      console.log({ error });
+      if (!user || !user.accountId) {
+        form.setError('email', {
+          type: 'manual',
+          message:
+            user?.error ||
+            (type === 'login'
+              ? 'Email not found. Please register first.'
+              : 'This email is already registered.'),
+        });
+        return;
+      }
+
+      setAccountId(user.accountId);
+    } catch (error: any) {
+      form.setError('email', {
+        type: 'manual',
+        message: error?.message || 'Something went wrong.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -132,7 +146,7 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
           >
             {type === 'login' ? 'Login' : 'Register'}
           </ButtonCustom>
-          {errorMsg && <p className='error-message'>{errorMsg}</p>}
+          {/* {errorMsg && <p className='error-message'>{errorMsg}</p>} */}
 
           <div className='body-2 flex justify-center'>
             <p className='text-muted-foreground'>
@@ -148,7 +162,7 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
         </form>
       </Form>
 
-      {accoundId && <ModalOtp email={form.getValues('email')} accountId={accoundId} />}
+      {accountId && <ModalOtp email={form.getValues('email')} accountId={accountId} />}
     </>
   );
 };

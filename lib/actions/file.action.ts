@@ -106,21 +106,47 @@ export const renameFile = async ({ fileId, name, ext, path }: RenameFileProps) =
 
 export const updateSharedFile = async ({
   fileId,
-  emails,
+  email, // single email string
   path,
+  mode,
 }: UpdateSharedFileProps) => {
   const { database } = await createAdminClient();
+
   try {
+    const fileDoc = await database.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      fileId
+    );
+
+    const currentUsers: string[] = fileDoc.users ?? [];
+    let updatedUsers: string[] = [];
+
+    if (mode === 'share') {
+      if (currentUsers.includes(email)) {
+        onError(email, `${email} sudah ada`);
+      }
+      updatedUsers = [...currentUsers, email];
+    }
+
+    if (mode === 'unshare') {
+      if (!currentUsers.includes(email)) {
+        onError(email, `${email} tidak ditemukan`);
+      }
+      updatedUsers = currentUsers.filter(u => u !== email);
+    }
+
     const updateFile = await database.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.filesCollectionId,
       fileId,
-      { users: emails }
+      { users: updatedUsers }
     );
 
     revalidatePath(path);
     return parseStringify(updateFile);
   } catch (error) {
     onError(error, 'Gagal mengupdate shared file');
+    return null;
   }
 };

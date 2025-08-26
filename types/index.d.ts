@@ -100,14 +100,15 @@ export type DetailProps = {
 };
 
 export type ShareProps = {
-  // onInputChange: React.Dispatch<React.SetStateAction<string[]>>;
-  onInputChange: () => void;
+  setInputShareValue: React.Dispatch<React.SetStateAction<string>>;
   onRemove: (email: string) => void;
   isLoading: booelan;
+  errorMsg?: string;
 } & FileProps;
 
 export type UpdateSharedFileProps = {
   fileId: string;
-  emails: string[];
+  email: string;
   path: string;
+  mode: 'share' | 'unshare';
 };

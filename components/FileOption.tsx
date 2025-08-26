@@ -27,6 +27,7 @@ import ButtonCustom from './Button-custom';
 import { renameFile, updateSharedFile } from '@/lib/actions/file.action';
 import { usePathname } from 'next/navigation';
 import { FileDetail, Share } from './FileOptionModal';
+import { z } from 'zod';
 
 const FileOption = ({ file }: FileProps) => {
   const name = getFileName(file.name);
@@ -37,13 +38,18 @@ const FileOption = ({ file }: FileProps) => {
   const [fileName, setFileName] = useState(name);
   const [isLoading, setIsLoading] = useState(false);
   const [emails, setEmails] = useState<string[]>(file.users ?? []);
+  const [inputShareValue, setInputShareValue] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const pathName = usePathname();
+
+  const emailSchema = z.email('Invalid email address');
 
   const closeAll = () => {
     setIsLoading(false);
     setIsModalOpen(false);
     setIsOptionOpen(false);
+    setErrorMsg('');
   };
 
   const onAction = async () => {
@@ -52,8 +58,7 @@ const FileOption = ({ file }: FileProps) => {
     setIsLoading(true);
     let success = false;
     const executions = {
-      share: async () =>
-        await updateSharedFile({ fileId: file.$id, emails, path: pathName }),
+      share: () => onShareEmail(),
       delete: () => console.log('delete'),
       rename: async () =>
         await renameFile({
@@ -82,28 +87,48 @@ const FileOption = ({ file }: FileProps) => {
     setIsLoading(true);
     const updatedEmails = emails.filter(e => e !== email);
 
-    const action = await updateSharedFile({ fileId: file.$id, emails, path: pathName });
+    const action = await updateSharedFile({
+      fileId: file.$id,
+      email,
+      path: pathName,
+      mode: 'unshare',
+    });
 
     if (action) {
       setEmails(updatedEmails);
     }
-    closeAll();
+    setIsLoading(false);
   };
 
-  const onInputShareChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const onShareEmail = async () => {
+    try {
+      const newEmail = emailSchema.parse(inputShareValue.trim());
 
-    // cek kalau ada koma (,) atau enter-like separator
-    if (value.includes(',')) {
-      const parts = value
-        .split(',')
-        .map(v => v.trim())
-        .filter(Boolean);
+      if (emails.includes(newEmail)) {
+        setErrorMsg(`${inputShareValue} sudah ada`);
+        setIsLoading(false);
+        return;
+      }
 
-      setEmails(prev => [...new Set([...prev, ...parts])]);
+      const updatedEmails = [...emails, newEmail]; // build new list
+      setEmails(updatedEmails);
 
-      // kosongkan input lagi
-      e.target.value = '';
+      setInputShareValue(''); // reset input
+      const res = await updateSharedFile({
+        fileId: file.$id,
+        email: newEmail, // use fresh list
+        path: pathName,
+        mode: 'share',
+      });
+
+      return res; // so onAction gets success
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setErrorMsg(err.issues[0].message);
+      } else {
+        setErrorMsg((err as Error).message);
+      }
+      return false;
     }
   };
 
@@ -126,12 +151,15 @@ const FileOption = ({ file }: FileProps) => {
           )}
           {value === 'details' && <FileDetail file={file} />}
           {value === 'share' && (
-            <Share
-              file={file}
-              onInputChange={onInputShareChange}
-              onRemove={onUnshareUser}
-              isLoading={isLoading}
-            />
+            <>
+              <Share
+                file={file}
+                setInputShareValue={setInputShareValue}
+                onRemove={onUnshareUser}
+                errorMsg={errorMsg}
+                isLoading={isLoading}
+              />
+            </>
           )}
         </DialogHeader>
         {['rename', 'delete', 'share'].includes(value) && (

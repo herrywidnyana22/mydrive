@@ -43,7 +43,13 @@ export const FileDetail = ({ file }: FileProps) => {
   );
 };
 
-export const Share = ({ file, onInputChange, onRemove, isLoading }: ShareProps) => {
+export const Share = ({
+  file,
+  setInputShareValue,
+  onRemove,
+  isLoading,
+  errorMsg,
+}: ShareProps) => {
   return (
     <>
       <ImageThumbnail file={file} />
@@ -54,10 +60,11 @@ export const Share = ({ file, onInputChange, onRemove, isLoading }: ShareProps) 
         <Input
           type='email'
           placeholder='Masukan email orangnya'
-          onChange={onInputChange}
+          onChange={e => setInputShareValue(e.target.value)}
           disabled={isLoading}
           className='share-input-field'
         />
+        <p className='text-xs text-error'>{errorMsg}</p>
         <div className='pt-4'>
           <div className='flex justify-between'>
             <p className='subtitle-2 text-light-100'>Dibagikan:</p>

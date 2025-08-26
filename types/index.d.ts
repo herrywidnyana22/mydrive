@@ -112,3 +112,9 @@ export type UpdateSharedFileProps = {
   path: string;
   mode: 'share' | 'unshare';
 };
+
+export type DeleteFileProps = {
+  fileId: string;
+  bucketFileId: string;
+  path: string;
+};

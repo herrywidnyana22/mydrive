@@ -1,6 +1,11 @@
 'use server';
 
-import { RenameFileProps, UploadFileProps, UpdateSharedFileProps } from '@/types';
+import {
+  RenameFileProps,
+  UploadFileProps,
+  UpdateSharedFileProps,
+  DeleteFileProps,
+} from '@/types';
 import { createAdminClient } from '../appwriter';
 import { onError } from './global.action';
 import { InputFile } from 'node-appwrite/file';
@@ -106,7 +111,7 @@ export const renameFile = async ({ fileId, name, ext, path }: RenameFileProps) =
 
 export const updateSharedFile = async ({
   fileId,
-  email, // single email string
+  email,
   path,
   mode,
 }: UpdateSharedFileProps) => {
@@ -146,7 +151,29 @@ export const updateSharedFile = async ({
     revalidatePath(path);
     return parseStringify(updateFile);
   } catch (error) {
-    onError(error, 'Gagal mengupdate shared file');
+    onError(error, 'Gagal membagikan file');
+    return null;
+  }
+};
+
+export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps) => {
+  const { database, files } = await createAdminClient();
+
+  try {
+    const deletedFile = await database.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      fileId
+    );
+
+    if (deletedFile) {
+      await files.deleteFile(appwriteConfig.bucketId, bucketFileId);
+    }
+
+    revalidatePath(path);
+    return parseStringify({ status: 'success' });
+  } catch (error) {
+    onError(error, 'Gagal menghapus file');
     return null;
   }
 };

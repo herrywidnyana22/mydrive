@@ -24,10 +24,11 @@ import { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import ButtonCustom from './Button-custom';
-import { renameFile, updateSharedFile } from '@/lib/actions/file.action';
+import { deleteFile, renameFile, updateSharedFile } from '@/lib/actions/file.action';
 import { usePathname } from 'next/navigation';
 import { FileDetail, Share } from './FileOptionModal';
 import { z } from 'zod';
+import { toast } from 'sonner';
 
 const FileOption = ({ file }: FileProps) => {
   const name = getFileName(file.name);
@@ -59,7 +60,7 @@ const FileOption = ({ file }: FileProps) => {
     let success = false;
     const executions = {
       share: () => onShareEmail(),
-      delete: () => console.log('delete'),
+      delete: () => onDeleteFile(),
       rename: async () =>
         await renameFile({
           fileId: file.$id,
@@ -73,6 +74,14 @@ const FileOption = ({ file }: FileProps) => {
 
     if (success) {
       closeAll();
+      toast.success(`${action.label} file berhasil`, {
+        duration: 3000,
+        description: (
+          <p>
+            <span className='text-brand'>${file.name}</span> berhasil di{action.value}
+          </p>
+        ),
+      });
     }
 
     setIsLoading(false);
@@ -98,6 +107,20 @@ const FileOption = ({ file }: FileProps) => {
       setEmails(updatedEmails);
     }
     setIsLoading(false);
+  };
+
+  const onDeleteFile = async () => {
+    try {
+      const res = await deleteFile({
+        fileId: file.$id,
+        bucketFileId: file.bucketFileId,
+        path: pathName,
+      });
+
+      return res;
+    } catch (error) {
+      return toast.error((error as Error).message);
+    }
   };
 
   const onShareEmail = async () => {
@@ -151,15 +174,18 @@ const FileOption = ({ file }: FileProps) => {
           )}
           {value === 'details' && <FileDetail file={file} />}
           {value === 'share' && (
-            <>
-              <Share
-                file={file}
-                setInputShareValue={setInputShareValue}
-                onRemove={onUnshareUser}
-                errorMsg={errorMsg}
-                isLoading={isLoading}
-              />
-            </>
+            <Share
+              file={file}
+              setInputShareValue={setInputShareValue}
+              onRemove={onUnshareUser}
+              errorMsg={errorMsg}
+              isLoading={isLoading}
+            />
+          )}
+          {value === 'delete' && (
+            <p className='delete-confirmation'>
+              Yakin ingin menghapus <span className='delete-file-name'>{file.name}</span>?
+            </p>
           )}
         </DialogHeader>
         {['rename', 'delete', 'share'].includes(value) && (

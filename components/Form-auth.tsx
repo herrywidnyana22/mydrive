@@ -79,10 +79,11 @@ const FormAuth = ({ type }: { type: AuthFormType }) => {
       }
 
       setAccountId(user.accountId);
-    } catch (error: any) {
+    } catch (error) {
       form.setError('email', {
         type: 'manual',
-        message: error?.message || 'Something went wrong.',
+        message:
+          error instanceof z.ZodError ? error.issues[0].message : 'Something went wrong.',
       });
     } finally {
       setIsLoading(false);

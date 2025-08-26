@@ -78,7 +78,7 @@ const FileOption = ({ file }: FileProps) => {
         duration: 3000,
         description: (
           <p>
-            <span className='text-brand'>${file.name}</span> berhasil di{action.value}
+            <span className='text-brand'>{file.name}</span> berhasil di{action.value}
           </p>
         ),
       });

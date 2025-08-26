@@ -13,13 +13,13 @@ const Card = async ({ file }: FileProps) => {
       <div className='flex justify-between'>
         <Thumbnail
           type={file.type}
-          ext={file.extention}
+          ext={file.extension}
           url={imageURL}
           className='!size-20'
         />
         <div className='flex flex-col items-end justify-between'>
           <FileOption file={file} />
-          <p className='body-1'>{convertFileSize(file.size)}</p>
+          <p className='text-muted-foreground text-sm'>{convertFileSize(file.size)}</p>
         </div>
       </div>
       <div className='file-card-details'>

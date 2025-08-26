@@ -129,7 +129,7 @@ export const getFileIcon = (extension: string | undefined, type: File | string) 
       return '/assets/icons/file-txt.svg';
     case 'xls':
     case 'xlsx':
-      return '/assets/icons/file-document.svg';
+      return '/assets/icons/file-excel.png';
     // Image
     case 'svg':
       return '/assets/icons/file-image.svg';
@@ -156,6 +156,57 @@ export const getFileIcon = (extension: string | undefined, type: File | string) 
     case 'aiff':
     case 'alac':
       return '/assets/icons/file-audio.svg';
+
+    //zip
+    case 'zip':
+    case 'rar':
+      return '/assets/icons/zip.png';
+
+    //code file
+    case 'tsx':
+    case 'ts':
+      return '/assets/icons/file-ts.png';
+    case 'js':
+    case 'jsx':
+      return '/assets/icons/file-js.png';
+    case 'html':
+      return '/assets/icons/file-html.png';
+    case 'css':
+    case 'scss':
+    case 'sass':
+      return '/assets/icons/file-style.png';
+    case 'c':
+    case 'cpp':
+    case 'h': // C/C++ header
+    case 'cs': // C#
+      return '/assets/icons/file-c.png';
+    case 'less':
+    case 'php':
+    case 'py':
+    case 'rb': // Ruby
+    case 'java':
+    case 'go':
+    case 'rs': // Rust
+    case 'swift':
+    case 'kt': // Kotlin
+    case 'dart':
+    case 'm': // Objective-C
+    case 'sql':
+    case 'sh':
+    case 'bash':
+    case 'pl': // Perl
+    case 'r': // R language
+    case 'scala':
+    case 'lua':
+    case 'yaml':
+    case 'yml':
+    case 'json':
+    case 'xml':
+    case 'toml':
+    case 'ini':
+    case 'md': // Markdown
+    case 'ino': // Arduino
+      return '/assets/icons/file-code.png';
 
     default:
       switch (type) {

@@ -1221,7 +1221,6 @@
 
 /* Sort */
 .sort-select {
-  /* @apply shad-no-focus; */
   height: 2.75rem;
   width: 100%;
   border-radius: 0.5rem;

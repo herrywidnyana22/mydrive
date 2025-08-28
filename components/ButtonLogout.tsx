@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from './ui/button';
 import { MobileConditionProps } from '@/types';
 import { logout } from '@/lib/actions/user.actions';

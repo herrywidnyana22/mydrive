@@ -77,7 +77,7 @@ const FileOption = ({ file }: FileProps) => {
       toast.success(`${action.label} file berhasil`, {
         duration: 3000,
         description: (
-          <p>
+          <p className='text-neutral-800'>
             <span className='text-brand'>{file.name}</span> berhasil di{action.value}
           </p>
         ),

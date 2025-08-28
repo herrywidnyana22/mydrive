@@ -5,6 +5,7 @@ import {
   UploadFileProps,
   UpdateSharedFileProps,
   DeleteFileProps,
+  GetFilesProps,
 } from '@/types';
 import { createAdminClient } from '../appwriter';
 import { onError } from './global.action';
@@ -58,7 +59,13 @@ export const uploadFile = async ({ ownerId, accountId, file, path }: UploadFileP
   }
 };
 
-const createQueries = (currentUser: Models.DefaultDocument) => {
+const createQueries = (
+  currentUser: Models.DefaultDocument,
+  types: string[],
+  searchText: string,
+  sortType: string,
+  limit?: number
+) => {
   const queries = [
     Query.or([
       Query.equal('owner', [currentUser.$id]),
@@ -66,18 +73,34 @@ const createQueries = (currentUser: Models.DefaultDocument) => {
     ]),
   ];
 
+  if (types.length > 0) queries.push(Query.equal('type', types));
+  if (searchText) queries.push(Query.contains('name', searchText));
+  if (limit) queries.push(Query.limit(limit));
+
+  //'$createdAt-desc'
+  if (sortType) {
+    const [sortBy, orderBy] = sortType.split('-');
+
+    queries.push(orderBy === 'asc' ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy));
+  }
+
   return queries;
 };
 
-export const getFiles = async () => {
+export const getFiles = async ({
+  types = [],
+  searchText = '',
+  sortType = '$createdAt-desc',
+  limit,
+}: GetFilesProps) => {
   const { database } = await createAdminClient();
 
   try {
     const currentUser = await getCurrentUser();
 
-    if (!currentUser) throw new Error('User tidak ditemukan');
+    if (!currentUser) onError('User', 'User tidak ditemukan');
 
-    const queries = createQueries(currentUser);
+    const queries = createQueries(currentUser, types, searchText, sortType, limit);
 
     const files = await database.listDocuments(
       appwriteConfig.databaseId,
@@ -88,6 +111,7 @@ export const getFiles = async () => {
     return parseStringify(files);
   } catch (error) {
     onError(error, 'Gagal ketika menampilkan file');
+    return [];
   }
 };
 
@@ -160,14 +184,39 @@ export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps
   const { database, files } = await createAdminClient();
 
   try {
-    const deletedFile = await database.deleteDocument(
+    // Ambil dokumen file dulu untuk cek owner dan users[]
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) onError('User', 'User tidak ditemukan');
+
+    const fileDoc = await database.getDocument(
       appwriteConfig.databaseId,
       appwriteConfig.filesCollectionId,
       fileId
     );
 
-    if (deletedFile) {
+    if (!fileDoc) onError('File:', 'File not found');
+
+    if (fileDoc.owner === currentUser.$id) {
+      // ✅ Owner -> hapus dokumen dan file di bucket
+      await database.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.filesCollectionId,
+        fileId
+      );
       await files.deleteFile(appwriteConfig.bucketId, bucketFileId);
+    } else {
+      // ✅ Bukan owner -> update field users[]
+      const updatedUsers = fileDoc.users.filter(
+        (email: string) => email !== currentUser.email
+      );
+
+      await database.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.filesCollectionId,
+        fileId,
+        { users: updatedUsers }
+      );
     }
 
     revalidatePath(path);

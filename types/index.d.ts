@@ -1,40 +1,42 @@
 import { Models } from 'node-appwrite';
 
-export type RegisterProps = {
+declare type FileType = 'document' | 'image' | 'video' | 'audio' | 'other';
+
+declare type RegisterProps = {
   fullName: string;
   email: string;
 };
 
-export type SidebarProps = {
+declare type SidebarProps = {
   avatar: string;
 } & RegisterProps;
 
-export type UserProps = {
+declare type UserProps = {
   $id: string;
   accountId: string;
 } & SidebarProps;
 
-export type MobileConditionProps = {
+declare type MobileConditionProps = {
   isMobile?: boolean;
 };
 
-export type OTPType = {
+declare type OTPType = {
   accountId: string;
   passcode: string;
 };
 
-export type UploaderProps = {
+declare type UploaderProps = {
   ownerId: string;
   accountId: string;
   className?: string;
 };
 
-export type UploadingFile = {
+declare type UploadingFile = {
   file: File;
   progress: number; // progress tiap file
 };
 
-export type ThumbnailProps = {
+declare type ThumbnailProps = {
   type: string;
   ext: string;
   url: string;
@@ -42,44 +44,50 @@ export type ThumbnailProps = {
   className?: string;
 };
 
-export type UploadFileProps = {
+declare type UploadFileProps = {
   file: File;
   path: string;
 } & UploaderProps;
 
-export type HoverProps = {
+declare type HoverProps = {
   children: React.ReactElement;
   text?: string;
   asChild?: boolean;
 };
 
-export type HeaderProps = {
+declare type HeaderProps = {
   userId: string;
   accountId: string;
 };
 
-export type ParamsProps = {
-  params: {
-    type: string;
-  };
+declare type SearchParamProps = {
+  params: Promise<{ type: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export type FileProps = {
+declare type GetFilesProps = {
+  types: FileType[];
+  searchText?: string;
+  sortType?: string;
+  limit?: number;
+};
+
+declare type FileProps = {
   file: Models.DefaultDocument;
 };
 
-export type FileTimeProps = {
+declare type FileTimeProps = {
   date: string;
   className?: string;
 };
 
-export type OptionActionProps = {
+declare type OptionActionProps = {
   label: string;
   icon: string;
   value: string;
 };
 
-export type CustomButtonProps = {
+declare type CustomButtonProps = {
   type?: 'button' | 'submit' | 'reset';
   isLoading: boolean;
   className?: string;
@@ -87,33 +95,33 @@ export type CustomButtonProps = {
   onClick?: () => void;
 };
 
-export type RenameFileProps = {
+declare type RenameFileProps = {
   fileId: string;
   name: string;
   ext: string;
   path: string;
 };
 
-export type DetailProps = {
+declare type DetailProps = {
   label: string;
   value: string;
 };
 
-export type ShareProps = {
+declare type ShareProps = {
   setInputShareValue: React.Dispatch<React.SetStateAction<string>>;
   onRemove: (email: string) => void;
   isLoading: booelan;
   errorMsg?: string;
 } & FileProps;
 
-export type UpdateSharedFileProps = {
+declare type UpdateSharedFileProps = {
   fileId: string;
   email: string;
   path: string;
   mode: 'share' | 'unshare';
 };
 
-export type DeleteFileProps = {
+declare type DeleteFileProps = {
   fileId: string;
   bucketFileId: string;
   path: string;

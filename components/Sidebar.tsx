@@ -3,13 +3,10 @@
 import { SidebarProps } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import UserAvatar from './UserAvatar';
 import NavItem from './NavItem';
 
 const Sidebar = ({ fullName, email, avatar }: SidebarProps) => {
-  const pathname = usePathname();
-
   return (
     <aside className='sidebar remove-scrollbar'>
       <Link href={'/'}>

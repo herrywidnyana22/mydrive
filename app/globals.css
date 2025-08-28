@@ -1130,7 +1130,6 @@
   box-shadow: var(--shadow-3);
 }
 .search-input {
-  /* @apply body-2 no-focus placeholder:body-1; */
   width: 100%;
   border: none;
   padding: 0;
@@ -1151,6 +1150,7 @@
   border-radius: 1.25rem;
   background-color: white;
   padding: 1rem;
+  box-shadow: var(--shadow-3);
 }
 /* .empty-result {
   @apply body-2 text-center text-light-100;

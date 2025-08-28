@@ -27,8 +27,8 @@ const Header = ({ userId, accountId }: HeaderProps) => {
               <Image
                 src={'assets/icons/logout.svg'}
                 alt='logout-icon'
-                height={28}
-                width={28}
+                height={20}
+                width={20}
               />
             </Button>
           </form>

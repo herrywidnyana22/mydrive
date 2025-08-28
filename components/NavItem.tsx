@@ -14,6 +14,7 @@ const NavItem = ({ isMobile }: MobileConditionProps) => {
           <Link key={i} href={item.url} className='lg:w-full'>
             <li
               className={cn(
+                'hover:bg-accent',
                 isMobile ? 'mobile-nav-item' : 'sidebar-nav-item h5',
                 pathname === item.url && 'active'
               )}

@@ -11,7 +11,7 @@ const ButtonLogout = ({ isMobile = false }: MobileConditionProps) => {
       onClick={async () => await logout()}
       className='sign-out-button bg-brand/10 hover:bg-brand/20 cursor-pointer'
     >
-      <Image src={'assets/icons/logout.svg'} alt='logout-icon' height={28} width={28} />
+      <Image src={'assets/icons/logout.svg'} alt='logout-icon' height={20} width={20} />
       {isMobile && <p>Log out</p>}
     </Button>
   );

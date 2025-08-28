@@ -100,18 +100,19 @@ export const formatDateTime = (isoString: string | null | undefined) => {
     'Feb',
     'Mar',
     'Apr',
-    'May',
+    'Mei',
     'Jun',
     'Jul',
-    'Aug',
+    'Agu',
     'Sep',
     'Oct',
     'Nov',
     'Dec',
   ];
   const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
 
-  return `${time}, ${day} ${month}`;
+  return `${day} ${month} ${year}, ${time}`;
 };
 
 export const getFileIcon = (extension: string | undefined, type: File | string) => {

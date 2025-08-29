@@ -74,6 +74,7 @@ declare type GetFilesProps = {
 
 declare type FileProps = {
   file: Models.DefaultDocument;
+  pageTitle?: string;
 };
 
 declare type FileTimeProps = {

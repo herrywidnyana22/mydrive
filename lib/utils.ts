@@ -286,3 +286,24 @@ export const getFileTypesParams = (type: string) => {
       return ['document'];
   }
 };
+
+export function buildUrlWithParams(
+  basePath: string,
+  currentParams: Record<string, string | undefined>,
+  newParams: Record<string, string | undefined>
+) {
+  // merge params
+  const params = { ...currentParams, ...newParams };
+
+  // filter null/undefined
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.set(key, value);
+    }
+  });
+
+  // always return relative URL
+  const queryString = searchParams.toString();
+  return queryString ? `${basePath}?${queryString}` : basePath;
+}

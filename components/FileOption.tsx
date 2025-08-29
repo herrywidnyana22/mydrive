@@ -218,8 +218,8 @@ const FileOption = ({ file }: FileProps) => {
           <Image
             alt='option icon'
             src={'./assets/icons/dots.svg'}
-            width={35}
-            height={35}
+            width={30}
+            height={30}
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent>

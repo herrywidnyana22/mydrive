@@ -128,32 +128,6 @@ export const sortTypes = [
   { label: 'Name', value: 'name' },
   { label: 'Size', value: 'size' },
 ];
-// export const sortTypes = [
-//   {
-//     label: 'Date created',
-//     value: '$createdAt-desc',
-//   },
-//   {
-//     label: 'Created Date (oldest)',
-//     value: '$createdAt-asc',
-//   },
-//   {
-//     label: 'Name (A-Z)',
-//     value: 'name-asc',
-//   },
-//   {
-//     label: 'Name (Z-A)',
-//     value: 'name-desc',
-//   },
-//   {
-//     label: 'Size (Highest)',
-//     value: 'size-desc',
-//   },
-//   {
-//     label: 'Size (Lowest)',
-//     value: 'size-asc',
-//   },
-// ];
 
 export const avatarPlaceholderUrl =
   'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg';

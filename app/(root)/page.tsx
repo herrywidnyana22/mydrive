@@ -1,9 +1,16 @@
-export default function Home() {
+import { getFiles } from '@/lib/actions/file.action';
+import { getUsageSummary } from '@/lib/utils';
+
+export default async function Home() {
+  const [files, totalSpace] = await Promise.all([
+    getFiles({ types: [], limit: 10 }),
+    getTotalSpaceUsed(),
+  ]);
+
+  const usedSummary = getUsageSummary(totalSpace);
   return (
-    <div className='flex items-center justify-center h-screen'>
-      <h1 className='text-3xl text-brand font-bold'>
-        MyDrive - File storage and sharing platform you need
-      </h1>
+    <div className='dashboard-container'>
+      <section></section>
     </div>
   );
 }

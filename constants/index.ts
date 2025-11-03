@@ -1,44 +1,3 @@
-// import {
-//   Clapperboard,
-//   Folder,
-//   Info,
-//   LayoutDashboard,
-//   Share2,
-//   SquarePen,
-//   CloudDownload,
-//   Trash,
-//   Images,
-//   ChartPie,
-// } from 'lucide-react';
-
-// export const navItems = [
-//   {
-//     name: 'Dashboard',
-//     icon: LayoutDashboard,
-//     url: '/',
-//   },
-//   {
-//     name: 'Documents',
-//     icon: Folder,
-//     url: '/documents',
-//   },
-//   {
-//     name: 'Images',
-//     icon: Images,
-//     url: '/images',
-//   },
-//   {
-//     name: 'Media',
-//     icon: Clapperboard,
-//     url: '/media',
-//   },
-//   {
-//     name: 'Others',
-//     icon: ChartPie,
-//     url: '/others',
-//   },
-// ];
-
 export const navItems = [
   {
     name: 'Dashboard',
@@ -67,33 +26,6 @@ export const navItems = [
   },
 ];
 
-// export const fileOptionItems = [
-//   {
-//     label: 'Rename',
-//     icon: SquarePen,
-//     value: 'rename',
-//   },
-//   {
-//     label: 'Details',
-//     icon: Info,
-//     value: 'details',
-//   },
-//   {
-//     label: 'Share',
-//     icon: Share2,
-//     value: 'share',
-//   },
-//   {
-//     label: 'Download',
-//     icon: CloudDownload,
-//     value: 'download',
-//   },
-//   {
-//     label: 'Delete',
-//     icon: Trash,
-//     value: 'delete',
-//   },
-// ];
 
 export const fileOptionItems = [
   {

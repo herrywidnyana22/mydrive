@@ -3,7 +3,6 @@
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { UserProps } from '@/types';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import UserAvatar from './UserAvatar';
 import { Separator } from './ui/separator';
@@ -18,8 +17,7 @@ const MobileNavigation = ({
   email,
   avatar,
 }: UserProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathName = usePathname();
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <header className='mobile-header'>

@@ -2,62 +2,61 @@
 
 import {
   RenameFileProps,
-  UploadFileProps,
   UpdateSharedFileProps,
   DeleteFileProps,
   GetFilesProps,
+  FileType,
 } from '@/types';
-import { createAdminClient } from '../appwriter';
+import { createAdminClient, createSessionClient } from '../appwriter';
 import { onError } from './global.action';
-import { InputFile } from 'node-appwrite/file';
 import { appwriteConfig } from '../appwriter/config';
 import { ID, Models, Query } from 'node-appwrite';
 import { constructFileUrl, getFileType, parseStringify } from '../utils';
 import { revalidatePath } from 'next/cache';
 import { getCurrentUser } from './user.actions';
 
-export const uploadFile = async ({ ownerId, accountId, file, path }: UploadFileProps) => {
-  const { files, database } = await createAdminClient();
+
+export const registerUploadedFile = async ({
+  bucketFile,
+  ownerId,
+  accountId,
+  path,
+}: {
+  bucketFile: { $id: string; name: string; sizeOriginal: number };
+  ownerId: string;
+  accountId: string;
+  path: string;
+}) => {
+  const { database } = await createAdminClient();
 
   try {
-    const inputFile = InputFile.fromBuffer(file, file.name);
-    const bucketFile = await files.createFile(
-      appwriteConfig.bucketId,
-      ID.unique(),
-      inputFile
-    );
-
     const fileDocument = {
       type: getFileType(bucketFile.name).type,
       name: bucketFile.name,
       url: constructFileUrl(bucketFile.$id),
+      // url: `${appwriteConfig.endpoint}/storage/buckets/${appwriteConfig.bucketId}/files/${bucketFile.$id}/view?project=${appwriteConfig.projectId}`,
       extension: getFileType(bucketFile.name).extension,
       size: bucketFile.sizeOriginal,
       owner: ownerId,
-      accountId: accountId,
+      accountId,
       users: [],
       bucketFileId: bucketFile.$id,
     };
 
-    const newFile = await database
-      .createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.filesCollectionId,
-        ID.unique(),
-        fileDocument
-      )
-      .catch(async (error: unknown) => {
-        await files.deleteFile(appwriteConfig.bucketId, bucketFile.$id);
-        onError(error, 'Gagal menyimpan file');
-      });
+    const newFile = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      ID.unique(),
+      fileDocument
+    );
 
     revalidatePath(path);
-
     return parseStringify(newFile);
   } catch (error) {
-    onError(error, 'Gagal mengunggah file');
+    onError(error, 'Gagal menyimpan metadata file');
   }
 };
+
 
 const createQueries = (
   currentUser: Models.DefaultDocument,
@@ -77,7 +76,6 @@ const createQueries = (
   if (searchText) queries.push(Query.contains('name', searchText));
   if (limit) queries.push(Query.limit(limit));
 
-  //'$createdAt-desc'
   if (sortType) {
     const [sortBy, orderBy] = sortType.split('-');
 
@@ -182,9 +180,9 @@ export const updateSharedFile = async ({
 
 export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps) => {
   const { database, files } = await createAdminClient();
+  console.log({fileId, bucketFileId, path})
 
   try {
-    // Ambil dokumen file dulu untuk cek owner dan users[]
     const currentUser = await getCurrentUser();
 
     if (!currentUser) onError('User', 'User tidak ditemukan');
@@ -197,16 +195,16 @@ export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps
 
     if (!fileDoc) onError('File:', 'File not found');
 
-    if (fileDoc.owner === currentUser.$id) {
-      // ✅ Owner -> hapus dokumen dan file di bucket
+    if (fileDoc.owner.$id === currentUser.$id) {
+    // if (fileDoc.owner.$id === currentUser.$id) {
       await database.deleteDocument(
         appwriteConfig.databaseId,
         appwriteConfig.filesCollectionId,
         fileId
       );
-      await files.deleteFile(appwriteConfig.bucketId, bucketFileId);
+      await files.deleteFile(appwriteConfig.bucketId, bucketFileId)
     } else {
-      // ✅ Bukan owner -> update field users[]
+
       const updatedUsers = fileDoc.users.filter(
         (email: string) => email !== currentUser.email
       );
@@ -216,7 +214,7 @@ export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps
         appwriteConfig.filesCollectionId,
         fileId,
         { users: updatedUsers }
-      );
+      )
     }
 
     revalidatePath(path);
@@ -225,4 +223,45 @@ export const deleteFile = async ({ fileId, bucketFileId, path }: DeleteFileProps
     onError(error, 'Gagal menghapus file');
     return null;
   }
-};
+}
+
+export async function getTotalSpaceUsed() {
+  try {
+    const { database } = await createSessionClient();
+    const currentUser = await getCurrentUser();
+    if (!currentUser) throw new Error("User is not authenticated.");
+
+    const files = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollectionId,
+      [Query.equal("owner", [currentUser.$id])],
+    );
+
+    const totalSpace = {
+      image: { size: 0, latestDate: "" },
+      document: { size: 0, latestDate: "" },
+      video: { size: 0, latestDate: "" },
+      audio: { size: 0, latestDate: "" },
+      other: { size: 0, latestDate: "" },
+      used: 0,
+      all: 2 * 1024 * 1024 * 1024 /* 2GB available bucket storage */,
+    };
+
+    files.documents.forEach((file) => {
+      const fileType = file.type as FileType;
+      totalSpace[fileType].size += file.size;
+      totalSpace.used += file.size;
+
+      if (
+        !totalSpace[fileType].latestDate ||
+        new Date(file.$updatedAt) > new Date(totalSpace[fileType].latestDate)
+      ) {
+        totalSpace[fileType].latestDate = file.$updatedAt;
+      }
+    });
+
+    return parseStringify(totalSpace);
+  } catch (error) {
+    onError(error, "Error calculating total space used:, ");
+  }
+}

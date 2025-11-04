@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { Models } from 'node-appwrite';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -22,6 +23,15 @@ export const convertFileSize = (sizeInBytes: number, digits?: number) => {
     return sizeInGB.toFixed(digits || 1) + ' GB'; // 1 GB or more, show in GB
   }
 };
+
+export const calculateTotalFileSize = (data: Models.DefaultDocument) => {
+  if (!data || !Array.isArray(data.documents)) return 0;
+
+  // Sum up all file sizes
+  const totalBytes = data.documents.reduce((sum, doc) => sum + (doc.size || 0), 0);
+
+  return convertFileSize(totalBytes)
+}
 
 export const calculatePercentage = (sizeInBytes: number) => {
   const totalSizeInBytes = 2 * 1024 * 1024 * 1024; // 2GB in bytes

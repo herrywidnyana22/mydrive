@@ -3,8 +3,8 @@ import { Button } from './ui/button';
 import { logout } from '@/lib/actions/user.actions';
 import Uploader from './Uploader';
 import { HeaderProps } from '@/types';
-import Image from 'next/image';
 import Hover from './Hover';
+import { LogOut } from 'lucide-react';
 
 const Header = ({ userId, accountId }: HeaderProps) => {
   return (
@@ -24,12 +24,7 @@ const Header = ({ userId, accountId }: HeaderProps) => {
               type='submit'
               className='sign-out-button bg-brand/10 hover:bg-brand/20 cursor-pointer rotate-180'
             >
-              <Image
-                src={'assets/icons/logout.svg'}
-                alt='logout-icon'
-                height={20}
-                width={20}
-              />
+              <LogOut size={30} className='text-brand rotate-180'/>
             </Button>
           </form>
         </Hover>

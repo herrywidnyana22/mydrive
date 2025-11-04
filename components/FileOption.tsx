@@ -116,7 +116,6 @@ const FileOption = ({ file }: FileProps) => {
         bucketFileId: file.bucketFileId,
         path: pathName,
       });
-
       return res;
     } catch (error) {
       return toast.error((error as Error).message);

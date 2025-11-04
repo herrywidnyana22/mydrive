@@ -2,7 +2,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -11,7 +10,6 @@ import {
 } from '@/components/ui/alert-dialog';
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { sendEmailOTP, verifyOTP } from '@/lib/actions/user.actions';
@@ -31,18 +29,19 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
 
   const router = useRouter();
 
-  const onSubmit = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = async (code?: string, e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
 
-    if (passcode.length < 6 || isLoading) return;
+    const otp = code ?? passcode;
+    if (otp.length < 6 || isLoading) return;
 
     setErrorMessage(null);
     setIsLoading(true);
     try {
-      const sessionId = await verifyOTP({ accountId, passcode });
+      const sessionId = await verifyOTP({ accountId, passcode: otp });
       if (sessionId) {
         setIsOpen(false);
-        router.push('/'); // Redirect to dashboard or desired page
+        router.push('/');
       }
     } catch (error) {
       console.log('Failed to verify OTP:', error);
@@ -65,17 +64,40 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
     }
   };
 
-  // ✅ Run when OTP input changes
   const handleChange = (value: string) => {
     setPassCode(value);
     if (value.length === 6) {
-      onSubmit(); // Auto-submit when full
+      onSubmit(value);
     }
   };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent className='alert-dialog'>
+      <AlertDialogContent
+        className={`alert-dialog transition-all duration-300 ${
+          isLoading ? 'backdrop-blur-sm pointer-events-none' : ''
+        }`}
+      >
+        {isLoading && (
+          <div
+            className="
+              absolute inset-0 z-50 flex flex-col items-center justify-center
+              rounded-xl bg-white/80 backdrop-blur-md
+              border border-gray-100 shadow-inner
+              transition-all duration-300
+            "
+          >
+            <Image
+              src="/assets/icons/loader-brand.svg"
+              alt="loading-icon"
+              height={40}
+              width={40}
+              className="animate-spin mb-4"
+            />
+            <p className="text-sm font-medium text-muted-foreground">Verifying OTP...</p>
+          </div>
+        )}
+
         <AlertDialogHeader className='relative flex justify-center'>
           <AlertDialogTitle className='h2 text-center'>
             Enter your OTP Code
@@ -84,10 +106,11 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
               alt='close-icon'
               height={20}
               width={20}
-              className='otp-close-button'
+              className='otp-close-button cursor-pointer'
               onClick={() => setIsOpen(false)}
             />
           </AlertDialogTitle>
+
           <AlertDialogDescription className='subtitle-2 text-center text-muted-foreground'>
             We&apos;ve sent a 6-digit OTP code to{' '}
             <span className='pl-1 text-brand'>{email}</span>.<br />
@@ -102,35 +125,14 @@ const ModalOtp = ({ accountId, email }: ModalOtpProps) => {
           onChange={handleChange}
         >
           <InputOTPGroup className='otp mt-3'>
-            <InputOTPSlot index={0} className='otp-slot' />
-            <InputOTPSlot index={1} className='otp-slot' />
-            <InputOTPSlot index={2} className='otp-slot' />
-            <InputOTPSlot index={3} className='otp-slot' />
-            <InputOTPSlot index={4} className='otp-slot' />
-            <InputOTPSlot index={5} className='otp-slot' />
+            {[...Array(6)].map((_, i) => (
+              <InputOTPSlot key={i} index={i} className='otp-slot' />
+            ))}
           </InputOTPGroup>
         </InputOTP>
 
         <AlertDialogFooter>
           <div className='flex w-full flex-col gap-4'>
-            <AlertDialogAction
-              onClick={onSubmit}
-              type='button'
-              className='submit-btn h-12'
-              disabled={isLoading || passcode.length < 6}
-            >
-              Continue
-              {isLoading && (
-                <Image
-                  src={'assets/icons/loader.svg'}
-                  alt='loading-icon'
-                  height={20}
-                  width={20}
-                  className='animate-spin'
-                />
-              )}
-            </AlertDialogAction>
-
             <div className='subtitle-2 mt-2 text-center text-error'>{errorMessage}</div>
             <div className='subtitle-2 text-center text-muted-foreground'>
               Didn&apos;t receive the code?

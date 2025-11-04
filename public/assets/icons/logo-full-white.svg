@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" role="img" aria-labelledby="title desc">
-  <title id="title">mydrive logo icon</title>
-  <desc id="desc">Icon-only version of the mydrive logo: a steel blue cloud with a folder and upload arrow.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="title desc">
+  <title id="title">mydrive logo</title>
+  <desc id="desc">A steel blue cloud with an upload arrow, with the word "mydrive" to the right.</desc>
   <defs>
+    <!-- Steel blue palette -->
     <style>
       :root { --steel:#3F6C8E; --steel-dark:#345A76; }
       .icon-fill { fill: var(--steel); }
       .icon-stroke { stroke: var(--steel-dark); stroke-width: 8; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+      .wordmark { fill: var(--steel-dark); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; font-weight: 700; letter-spacing: 0.5px; }
+      @media (prefers-color-scheme: dark) {
+        .wordmark { fill:#E6EEF5; } /* optional: lighter wordmark in dark contexts */
+      }
     </style>
+    <!-- subtle gradient for icon depth (remains vector) -->
     <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#497FA3"/>
       <stop offset="100%" stop-color="#3F6C8E"/>
     </linearGradient>
   </defs>
 
-  <!-- Cloud + Folder + Arrow -->
+  <!-- Icon group -->
   <g transform="translate(10,10)">
+    <!-- Cloud -->
     <path d="M88 84H52a30 30 0 1 1 6-59 38 38 0 0 1 73 13h5a26 26 0 1 1 0 52H88z"
           fill="url(#g1)" stroke="#345A76" stroke-width="6" stroke-linejoin="round"/>
+    <!-- Folder tab (suggests storage) -->
     <path d="M46 66h84a8 8 0 0 1 8 8v26a8 8 0 0 1-8 8H46a8 8 0 0 1-8-8V74a8 8 0 0 1 8-8z"
           fill="#E6EEF5" stroke="#345A76" stroke-width="6"/>
     <path d="M46 66v-6a8 8 0 0 1 8-8h26l10 14"
           fill="none" stroke="#345A76" stroke-width="6" stroke-linejoin="round"/>
+    <!-- Upload arrow -->
     <path d="M88 101V78" class="icon-stroke"/>
     <path d="M72 88l16-16 16 16" class="icon-stroke"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(180,94)">
+    <text class="wordmark" font-size="60">
+      <tspan>my</tspan><tspan font-weight="800">drive</tspan>
+    </text>
   </g>
 </svg>

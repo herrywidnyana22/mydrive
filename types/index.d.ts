@@ -31,10 +31,6 @@ declare type UploaderProps = {
   className?: string;
 };
 
-declare type UploadingFile = {
-  file: File;
-  progress: number; // progress tiap file
-};
 
 declare type ThumbnailProps = {
   type: string;
@@ -45,7 +41,8 @@ declare type ThumbnailProps = {
 };
 
 declare type UploadFileProps = {
-  file: File;
+  // file: File;
+  bucketFile: { $id: string; name: string; sizeOriginal: number };
   path: string;
 } & UploaderProps;
 

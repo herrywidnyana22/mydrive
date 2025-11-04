@@ -3,7 +3,7 @@ import ListView from '@/components/ListView';
 import Sort from '@/components/Sort';
 import ToggleViewButton from '@/components/ToggleViewMode';
 import { getFiles } from '@/lib/actions/file.action';
-import { cn, getFileTypesParams } from '@/lib/utils';
+import { calculateTotalFileSize, cn, getFileTypesParams } from '@/lib/utils';
 import { FileType, SearchParamProps } from '@/types';
 import { Models } from 'node-appwrite';
 
@@ -14,7 +14,8 @@ const Page = async ({ params, searchParams }: SearchParamProps) => {
   const viewMode = ((await searchParams)?.view as 'list') || 'card';
 
   const types = getFileTypesParams(pageTitle) as FileType[];
-  const files = (await getFiles({ types, searchText, sortType })) ?? [];
+  const files = (await getFiles({ types, searchText, sortType })) ?? []
+  const totalSize = calculateTotalFileSize(files);
 
   return (
     <div className='page-container'>
@@ -22,7 +23,7 @@ const Page = async ({ params, searchParams }: SearchParamProps) => {
         <h1 className='h1 capitalize'>{pageTitle}</h1>
         <div className='flex items-center justify-between'>
           <p className='body-1'>
-            Total: <span className='h5 text-brand'>0MB</span>
+            Total: <span className='h5 text-brand'>{totalSize}</span>
           </p>
           <div className='sort-container flex gap-2'>
             <Sort />

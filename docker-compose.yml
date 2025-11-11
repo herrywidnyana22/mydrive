@@ -1,0 +1,10 @@
+services:
+  mydrive:
+    image: mydrive:${TAG:-latest}
+    build: .
+    container_name: mydrive-app
+    ports:
+      - '3001:3000' # host:container
+    env_file:
+      - .env
+    restart: always

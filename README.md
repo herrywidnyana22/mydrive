@@ -19,12 +19,12 @@ Dibangun untuk membantu pengguna mengelola, menyinkronkan, dan membagikan file d
 
 ## 🧱 Teknologi yang Digunakan
 
-| Layer       | Teknologi                                             |
-| ----------- | ----------------------------------------------------- |
-| Frontend    | Next.js, TypeScript, Tailwind CSS                     |
-| Backend     | (Opsional: Django / Express / Appwrite / API custom)  |
-| Database    | PostgreSQL / MySQL / MongoDB (tergantung konfigurasi) |
-| Deployment  | Docker, Nginx, GitHub Actions                         |
-| Cloud / CDN | Cloudflare / S3-compatible storage (opsional)         |
+| Layer       | Teknologi                                     |
+| ----------- | --------------------------------------------- |
+| Frontend    | Next.js, TypeScript, Tailwind CSS             |
+| Backend     | Appwrite / API custom                         |
+| Database    | Appwrite                                      |
+| Deployment  | Docker, Cloudflared, GitHub Actions           |
+| Cloud / CDN | Cloudflare / S3-compatible storage (opsional) |
 
 ---
